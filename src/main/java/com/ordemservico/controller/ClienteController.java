@@ -2,9 +2,11 @@ package com.ordemservico.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ordemservico.domain.model.Cliente;
 import com.ordemservico.domain.service.CadastroClienteService;
+import com.ordemservico.event.HeaderLocationEvent;
 import com.ordemservico.repository.ClienteRepository;
 
 @RestController
@@ -28,6 +31,9 @@ public class ClienteController {
 	
 	@Autowired
 	private CadastroClienteService clienteService; 
+	
+	@Autowired
+	private ApplicationEventPublisher publisher;
 	
 	@GetMapping
 	public List<Cliente> listar (){
@@ -43,9 +49,11 @@ public class ClienteController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Cliente> adicionar (@Valid @RequestBody Cliente cliente){
+	public ResponseEntity<Cliente> adicionar (@Valid @RequestBody Cliente cliente, HttpServletResponse response){
 		
 		Cliente clienteSalvo = clienteService.salvar(cliente);
+		
+		publisher.publishEvent(new HeaderLocationEvent(this, response, clienteSalvo.getId()));
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(clienteSalvo);
 	}
