@@ -1,6 +1,6 @@
 package com.ordemservico.domain.service;
 
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class OrdemServicoService {
 		
 		ordemServico.setCliente(cliente);
 		ordemServico.setStatus(StatusOrdemServico.ABERTA);
-		ordemServico.setDataAbertura(LocalDate.now());
+		ordemServico.setDataAbertura(OffsetDateTime.now());
 		
 		return ordemServicoRepository.save(ordemServico);
 	}

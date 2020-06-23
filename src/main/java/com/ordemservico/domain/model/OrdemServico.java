@@ -1,7 +1,7 @@
 package com.ordemservico.domain.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,16 +42,16 @@ public class OrdemServico {
 	@Enumerated(EnumType.STRING)
 	@JsonProperty(access = Access.READ_ONLY)
 	private StatusOrdemServico status;
-	
+
 	@NotNull
 	@Column(name = "data_abertura")
 	@JsonProperty(access = Access.READ_ONLY)
-	private LocalDate dataAbertura;
+	private OffsetDateTime dataAbertura;
 	
 	@NotNull
 	@Column(name = "data_finalizacao")
 	@JsonProperty(access = Access.READ_ONLY)
-	private LocalDate dataFinalizacao;
+	private OffsetDateTime dataFinalizacao;
 
 	public Long getId() {
 		return id;
@@ -93,19 +93,19 @@ public class OrdemServico {
 		this.status = status;
 	}
 
-	public LocalDate getDataAbertura() {
+	public OffsetDateTime getDataAbertura() {
 		return dataAbertura;
 	}
 
-	public void setDataAbertura(LocalDate dataAbertura) {
+	public void setDataAbertura(OffsetDateTime dataAbertura) {
 		this.dataAbertura = dataAbertura;
 	}
 
-	public LocalDate getDataFinalizacao() {
+	public OffsetDateTime getDataFinalizacao() {
 		return dataFinalizacao;
 	}
 
-	public void setDataFinalizacao(LocalDate dataFinalizacao) {
+	public void setDataFinalizacao(OffsetDateTime dataFinalizacao) {
 		this.dataFinalizacao = dataFinalizacao;
 	}
 
