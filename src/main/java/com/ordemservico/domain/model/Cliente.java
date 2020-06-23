@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -16,20 +17,21 @@ import com.ordemservico.domain.ValidationGroups;
 @Table(name = "cliente")
 public class Cliente {
 	
-	@NotNull(groups = ValidationGroups.ClienteId.class)
+	@NotNull( groups = ValidationGroups.ClienteId.class)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotNull
+	@NotBlank
 	@Size(min = 3, max = 50)
 	private String nome;
 	
-	@NotNull
+	@NotBlank
 	@Email
 	@Size(max = 255)
 	private String email;
 	
+	@NotBlank
 	@Size(min = 6 ,max = 30)
 	private String telefone;
 

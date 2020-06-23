@@ -15,10 +15,10 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 import com.ordemservico.domain.ValidationGroups;
 
 @Entity
@@ -43,12 +43,10 @@ public class OrdemServico {
 	@JsonProperty(access = Access.READ_ONLY)
 	private StatusOrdemServico status;
 
-	@NotNull
 	@Column(name = "data_abertura")
 	@JsonProperty(access = Access.READ_ONLY)
 	private OffsetDateTime dataAbertura;
 	
-	@NotNull
 	@Column(name = "data_finalizacao")
 	@JsonProperty(access = Access.READ_ONLY)
 	private OffsetDateTime dataFinalizacao;

@@ -71,9 +71,9 @@ public class OrdemServicoController {
 	}
 	
 	
-	//ModelMaper atribui as propriedades de ordemServico para OrdemServicoDto //
 	private OrdemServicoDto toDto (OrdemServico ordemServico) {
 		
+		//ModelMaper atribui as propriedades de ordemServico para OrdemServicoDto //
 		return modelMapper.map(ordemServico, OrdemServicoDto.class);
 	}
 
