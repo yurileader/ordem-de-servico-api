@@ -46,6 +46,7 @@ public class osExceptionHandler extends ResponseEntityExceptionHandler{
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 
 		List<Error> erros = criarListaErros(ex.getBindingResult());
+		
 		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
 	}
 
