@@ -1,35 +1,28 @@
 package com.ordemservico.domain.model;
 
+import java.time.OffsetDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
 
 @Entity
-@Table(name = "cliente")
-public class Cliente {
-	
+@Table(name = "comentario")
+public class Comentario {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
-	@Size(min = 3, max = 50)
-	private String nome;
+	@ManyToOne
+	private OrdemServico ordemServico;
 	
-	@NotBlank
-	@Email
-	@Size(max = 255)
-	private String email;
+	private String descricao;
 	
-	@NotBlank
-	@Size(min = 6 ,max = 30)
-	private String telefone;
+	private OffsetDateTime dataEnvio;
 
 	public Long getId() {
 		return id;
@@ -39,28 +32,28 @@ public class Cliente {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public OrdemServico getOrdemServico() {
+		return ordemServico;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setOrdemServico(OrdemServico ordemServico) {
+		this.ordemServico = ordemServico;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
-	public String getTelefone() {
-		return telefone;
+	public OffsetDateTime getDataEnvio() {
+		return dataEnvio;
 	}
 
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
+	public void setDataEnvio(OffsetDateTime dataEnvio) {
+		this.dataEnvio = dataEnvio;
 	}
 
 	@Override
@@ -79,7 +72,7 @@ public class Cliente {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Cliente other = (Cliente) obj;
+		Comentario other = (Comentario) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

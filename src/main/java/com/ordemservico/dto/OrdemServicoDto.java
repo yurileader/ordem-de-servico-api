@@ -8,7 +8,7 @@ import com.ordemservico.domain.model.StatusOrdemServico;
 public class OrdemServicoDto {
 	
 	private Long id;
-	private String nomeCliente;
+	private ClienteResumoDto cliente;
 	private String descricao;
 	private BigDecimal preco;
 	private StatusOrdemServico status;
@@ -21,12 +21,6 @@ public class OrdemServicoDto {
 	}
 	public void setId(Long id) {
 		this.id = id;
-	}
-	public String getNomeCliente() {
-		return nomeCliente;
-	}
-	public void setNomeCliente(String nomeCliente) {
-		this.nomeCliente = nomeCliente;
 	}
 	public String getDescricao() {
 		return descricao;
@@ -58,5 +52,12 @@ public class OrdemServicoDto {
 	public void setDataFinalizacao(OffsetDateTime dataFinalizacao) {
 		this.dataFinalizacao = dataFinalizacao;
 	}
-
+	public ClienteResumoDto getCliente() {
+		return cliente;
+	}
+	public void setCliente(ClienteResumoDto cliente) {
+		this.cliente = cliente;
+	}
+	
+	
 }

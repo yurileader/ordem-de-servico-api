@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ordemservico.domain.model.OrdemServico;
 import com.ordemservico.domain.service.OrdemServicoService;
 import com.ordemservico.dto.OrdemServicoDto;
+import com.ordemservico.dto.OrdemServicoInputDto;
 import com.ordemservico.event.HeaderLocationEvent;
 import com.ordemservico.repository.OrdemServicoRepository;
 
@@ -56,7 +57,9 @@ public class OrdemServicoController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<OrdemServicoDto> criarOrdem (@Valid @RequestBody OrdemServico ordemServico, HttpServletResponse response){
+	public ResponseEntity<OrdemServicoDto> criarOrdem (@Valid @RequestBody OrdemServicoInputDto ordemServicoInputDto, HttpServletResponse response){
+		
+		OrdemServico ordemServico = toEntity(ordemServicoInputDto);
 		
 		OrdemServico ordemServicoSalvo = ordemServicoService.criar(ordemServico);
 		
@@ -83,5 +86,10 @@ public class OrdemServicoController {
 		return ordensServico.stream()
 				.map(ordemServico -> toDto (ordemServico))
 				.collect(Collectors.toList());
+	}
+	
+	private OrdemServico toEntity (OrdemServicoInputDto ordemServicoInputDto) {
+		
+		return modelMapper.map(ordemServicoInputDto, OrdemServico.class);
 	}
 }
