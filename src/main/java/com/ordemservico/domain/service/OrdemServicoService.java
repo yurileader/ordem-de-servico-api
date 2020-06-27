@@ -3,9 +3,9 @@ package com.ordemservico.domain.service;
 import java.time.OffsetDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.ordemservico.domain.exception.EntidadeNaoEncontrada;
 import com.ordemservico.domain.model.Cliente;
 import com.ordemservico.domain.model.Comentario;
 import com.ordemservico.domain.model.OrdemServico;
@@ -35,9 +35,16 @@ public class OrdemServicoService {
 		return ordemServicoRepository.save(ordemServico);
 	}
 	
-	public Comentario adicionarComentario (Long ordemServicoId, String descricao) {
-		OrdemServico ordemServico = ordemServicoRepository.findById(ordemServicoId)
-				.orElseThrow(() -> new EmptyResultDataAccessException(1));
+	public void finalizar (Long id) {
+		OrdemServico ordemServico = buscarOrdemServico(id);
+		
+		ordemServico.finalizar();
+		
+		ordemServicoRepository.save(ordemServico);
+	}
+	
+	public Comentario adicionarComentario (Long id, String descricao) {
+		OrdemServico ordemServico = buscarOrdemServico(id);
 		
 		Comentario comentario = new Comentario();
 		comentario.setDataEnvio(OffsetDateTime.now());
@@ -45,5 +52,10 @@ public class OrdemServicoService {
 		comentario.setOrdemServico(ordemServico);
 		
 		return comentarioRepository.save(comentario);
+	}
+
+	private OrdemServico buscarOrdemServico(Long id) {
+		return ordemServicoRepository.findById(id)
+				.orElseThrow(() -> new EntidadeNaoEncontrada());
 	}
 }

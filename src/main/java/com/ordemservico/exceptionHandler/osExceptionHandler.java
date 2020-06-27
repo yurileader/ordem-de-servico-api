@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.ordemservico.domain.exception.EntidadeNaoEncontrada;
+import com.ordemservico.domain.exception.NaoPodeSerFinalizadaException;
+
 @ControllerAdvice
 public class osExceptionHandler extends ResponseEntityExceptionHandler{
 	
@@ -77,7 +80,31 @@ public class osExceptionHandler extends ResponseEntityExceptionHandler{
 		
 	}
 	
-	
+	@ExceptionHandler ({ EntidadeNaoEncontrada.class })
+	public ResponseEntity<Object> handleEntidadeNaoEncontrada (EntidadeNaoEncontrada ex, WebRequest request) {
+
+		String mensagemUsuario = messageSource.getMessage("ordem-servico-nao-encontrada", null,
+				LocaleContextHolder.getLocale());
+		String mensagemDesenvolvedor = Optional.ofNullable(ex.getCause()).orElse(ex).toString();
+
+		List<Error> erros = Arrays.asList(new Error(mensagemUsuario, mensagemDesenvolvedor));
+
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+
+	}
+
+	@ExceptionHandler ({ NaoPodeSerFinalizadaException.class })
+	public ResponseEntity<Object> handleNaoPodeSerFinalizadaException (NaoPodeSerFinalizadaException ex, WebRequest request) {
+
+		String mensagemUsuario = messageSource.getMessage("ordem-servico-nao-pode-finalizar", null,
+				LocaleContextHolder.getLocale());
+		String mensagemDesenvolvedor = Optional.ofNullable(ex.getCause()).orElse(ex).toString();
+
+		List<Error> erros = Arrays.asList(new Error(mensagemUsuario, mensagemDesenvolvedor));
+
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+
+	}
 	
 	/*Metodo criado para retonar uma lista de erros
 	  Qualquer campo obrigatorio preenchido errado, eles irão aparecer nesa lista*/
@@ -94,7 +121,7 @@ public class osExceptionHandler extends ResponseEntityExceptionHandler{
 		return erros;
 	}
 	
-	
+
                                   //CLASSE CRIADA PARA ENVIAR AS MENSAGEM SEM CONCATENAR
 public static class Error {
 

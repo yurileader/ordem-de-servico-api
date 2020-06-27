@@ -19,6 +19,7 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.ordemservico.domain.exception.NaoPodeSerFinalizadaException;
 
 @Entity
 @Table(name = "ordem_servico")
@@ -138,6 +139,24 @@ public class OrdemServico {
 			return false;
 		return true;
 	}
+
 	
+	public void finalizar() {
+
+		if(naoPodeSerFinalizada()) {
+			throw new NaoPodeSerFinalizadaException("Ordem não pode ser finalizada");
+		}
+		
+		setStatus(StatusOrdemServico.FINALIZADA);
+		setDataFinalizacao(OffsetDateTime.now());
+	}
+
+	public boolean podeSerFinalizada() {
+		return StatusOrdemServico.ABERTA.equals(getStatus());
+	}
 	
+	public boolean naoPodeSerFinalizada() {
+		return !podeSerFinalizada();
+	}
+
 }

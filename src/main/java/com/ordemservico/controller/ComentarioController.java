@@ -7,7 +7,6 @@ import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ordemservico.domain.exception.EntidadeNaoEncontrada;
 import com.ordemservico.domain.model.Comentario;
 import com.ordemservico.domain.model.OrdemServico;
 import com.ordemservico.domain.service.OrdemServicoService;
@@ -25,7 +25,7 @@ import com.ordemservico.dto.ComentarioInputDto;
 import com.ordemservico.repository.OrdemServicoRepository;
 
 @RestController
-@RequestMapping("/ordens-servico/{ordemServicoId}/comentarios")
+@RequestMapping("/ordens-servico/{id}/comentarios")
 public class ComentarioController {
 
 	@Autowired
@@ -38,22 +38,25 @@ public class ComentarioController {
 	private ModelMapper modelMapper;
 	
 	@GetMapping
-	public List<ComentarioDto> listar (@PathVariable Long  ordemServicoId){
-		OrdemServico ordemServico = ordemServicoRepository.findById(ordemServicoId)
-				.orElseThrow(() -> new EmptyResultDataAccessException(1));
+	public List<ComentarioDto> listar (@PathVariable Long  id){
+		OrdemServico ordemServico = ordemServicoRepository.findById(id)
+				.orElseThrow(() -> new EntidadeNaoEncontrada());
 		
 		return toListDto(ordemServico.getComentarios());
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ComentarioDto adicionar(@PathVariable Long ordemServicoId, @Valid @RequestBody ComentarioInputDto comentarioInputDto) {
+	public ComentarioDto adicionar(@PathVariable Long id, @Valid @RequestBody ComentarioInputDto comentarioInputDto) {
 		
-		Comentario comentario = ordemServicoService.adicionarComentario(ordemServicoId, comentarioInputDto.getDescricao());
+		Comentario comentario = ordemServicoService.adicionarComentario(id, comentarioInputDto.getDescricao());
 		
 		
 		return toDto(comentario);
 	}
+	
+	
+	
 	
 	private ComentarioDto toDto (Comentario comentario) {
 		
